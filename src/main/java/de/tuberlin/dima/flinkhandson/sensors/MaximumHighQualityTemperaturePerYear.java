@@ -19,7 +19,6 @@
 package de.tuberlin.dima.flinkhandson.sensors;
 
 import de.tuberlin.dima.flinkhandson.Config;
-import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.aggregation.Aggregations;
@@ -46,8 +45,8 @@ public class MaximumHighQualityTemperaturePerYear {
             .types(Short.class, Short.class, Integer.class, Double.class);
 
 
-    DataSet<Tuple4<Short, Short, Integer, Double>> highQualityMeasurements =
-        measurements.filter(new QualityFilter(qualityThreshold));
+    // IMPLEMENT THIS STEP
+    DataSet<Tuple4<Short, Short, Integer, Double>> highQualityMeasurements = null;
 
     DataSet<Tuple2<Short, Integer>> maxTemperatures =
         highQualityMeasurements
@@ -59,21 +58,5 @@ public class MaximumHighQualityTemperaturePerYear {
 
     env.execute();
   }
-
-
-  static class QualityFilter implements FilterFunction<Tuple4<Short, Short, Integer, Double>> {
-
-    private double threshold;
-
-    QualityFilter(double threshold) {
-      this.threshold = threshold;
-    }
-
-    @Override
-    public boolean filter(Tuple4<Short, Short, Integer, Double> measurement) throws Exception {
-      return measurement.f3 >= threshold;
-    }
-  }
-
 
 }

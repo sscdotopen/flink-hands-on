@@ -47,11 +47,8 @@ public class BooksAndAuthors {
            .fieldDelimiter('\t')
            .types(Integer.class, Short.class, String.class);
 
-    DataSet<Tuple2<String, String>> bookAndAuthor =
-        authors.join(books).where(AUTHOR_ID_FIELD).equalTo(BOOK_AUTHORID_FIELD)
-               .projectFirst(AUTHOR_NAME_FIELD)
-               .projectSecond(BOOK_NAME_FIELD)
-               .types(String.class, String.class);
+    // IMPLEMENT THIS STEP
+    DataSet<Tuple2<String, String>> bookAndAuthor = null;
 
     bookAndAuthor.writeAsCsv(Config.outputPathTo("bookAuthorJoin"), FileSystem.WriteMode.OVERWRITE);
 

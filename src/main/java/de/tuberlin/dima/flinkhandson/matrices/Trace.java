@@ -18,13 +18,9 @@
 
 package de.tuberlin.dima.flinkhandson.matrices;
 
-
-import org.apache.flink.api.common.functions.FilterFunction;
-import org.apache.flink.api.common.functions.GroupReduceFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.operators.DataSource;
-import org.apache.flink.util.Collector;
 
 public class Trace {
 
@@ -43,32 +39,12 @@ public class Trace {
                          new Cell(2, 1, 1), new Cell(2, 2, 1));
 
 
-    DataSet<Double> trace =
-        matrix.filter(new DiagonalOnly())
-              .reduceGroup(new SumDiagonal());
+    // IMPLEMENT THIS STEP
+    DataSet<Double> trace = null;
 
     trace.print();
 
     env.execute();
 
-  }
-
-  static class DiagonalOnly implements FilterFunction<Cell> {
-
-    @Override
-    public boolean filter(Cell cell) throws Exception {
-      return cell.i == cell.j;
-    }
-  }
-
-  static class SumDiagonal implements GroupReduceFunction<Cell, Double> {
-    @Override
-    public void reduce(Iterable<Cell> cells, Collector<Double> collector) throws Exception {
-      double trace = 0;
-      for (Cell cell: cells) {
-        trace += cell.value;
-      }
-      collector.collect(trace);
-    }
   }
 }
