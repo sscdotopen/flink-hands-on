@@ -19,18 +19,18 @@
 package de.tuberlin.dima.flinkhandson;
 
 
+import org.apache.flink.shaded.com.google.common.io.Resources;
+
 import java.io.File;
 
 public class Config {
-
-  public static String RESOURCE_PATH = "/home/ssc/Entwicklung/projects/flink-hands-on/src/main/resources/";
 
   public static String OUTPUT_PATH = "/tmp/flink-hands-on/";
 
   private Config() {}
 
   public static String pathTo(String file) {
-    return new File(RESOURCE_PATH, file).getAbsolutePath();
+    return Resources.getResource(file).getFile();
   }
 
   public static String outputPathTo(String directory) {
