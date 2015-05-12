@@ -19,6 +19,7 @@
 package de.tuberlin.dima.flinkhandson.sensors;
 
 import de.tuberlin.dima.flinkhandson.Config;
+import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.aggregation.Aggregations;
@@ -37,7 +38,7 @@ public class MaximumHighQualityTemperaturePerYear {
 
     ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 
-    double qualityThreshold = 0.99;
+    final double qualityThreshold = 0.99;
 
     DataSet<Tuple4<Short, Short, Integer, Double>> measurements =
         env.readCsvFile(Config.pathTo("temperatures.tsv"))
@@ -52,7 +53,7 @@ public class MaximumHighQualityTemperaturePerYear {
         highQualityMeasurements
             .groupBy(YEAR_FIELD)
             .aggregate(Aggregations.MAX, TEMPERATURE_FIELD)
-            .project(YEAR_FIELD, TEMPERATURE_FIELD).types(Short.class, Integer.class);
+            .project(YEAR_FIELD, TEMPERATURE_FIELD);
 
     maxTemperatures.writeAsCsv(Config.outputPathTo("maximumHighQualityTemperatures"), FileSystem.WriteMode.OVERWRITE);
 

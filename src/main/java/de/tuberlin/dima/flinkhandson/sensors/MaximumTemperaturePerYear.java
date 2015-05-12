@@ -46,7 +46,7 @@ public class MaximumTemperaturePerYear {
     DataSet<Tuple2<Short, Integer>> maxTemperatures =
       measurements.groupBy(YEAR_FIELD)
         .aggregate(Aggregations.MAX, TEMPERATURE_FIELD)
-        .project(YEAR_FIELD, TEMPERATURE_FIELD).types(Short.class, Integer.class);
+        .project(YEAR_FIELD, TEMPERATURE_FIELD);
 
     maxTemperatures.writeAsCsv(Config.outputPathTo("maximumTemperatures"), FileSystem.WriteMode.OVERWRITE);
 
