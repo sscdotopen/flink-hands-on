@@ -37,4 +37,8 @@ public class Config {
     return new File(OUTPUT_PATH, directory).getAbsolutePath();
   }
 
+  public static String outputPathToLogFile() {
+    return new File(OUTPUT_PATH, "logfile").getAbsolutePath();
+  }
+
 }
