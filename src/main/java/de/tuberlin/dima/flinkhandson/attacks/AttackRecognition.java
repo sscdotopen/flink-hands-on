@@ -1,17 +1,11 @@
 package de.tuberlin.dima.flinkhandson.attacks;
 
 import de.tuberlin.dima.flinkhandson.Config;
-import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.common.functions.ReduceFunction;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.windowing.helper.Count;
-import org.apache.flink.streaming.api.windowing.helper.Time;
 
 import java.io.*;
-import java.util.concurrent.TimeUnit;
 
 public class AttackRecognition {
 
@@ -73,11 +67,11 @@ public class AttackRecognition {
 				if (i == ATTACK_EVERY) {
 					i = 0;
 					for (int j = 0; j < NUMBER_ATTACK_MESSAGES; j++) {
-						writeLogEntry("86.102.2." + ((int) (Math.random()*128 + 1)));
+						writeLogEntry("86.47.1.12");
 					}
 				}
 				else {
-					writeLogEntry("86.47.1.12");
+					writeLogEntry("86.102.2." + ((int) (Math.random()*128 + 1)));
 				}
 				i++;
 			}
