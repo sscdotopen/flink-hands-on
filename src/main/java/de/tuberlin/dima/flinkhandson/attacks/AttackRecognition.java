@@ -1,37 +1,38 @@
 package de.tuberlin.dima.flinkhandson.attacks;
 
 import de.tuberlin.dima.flinkhandson.Config;
-import org.apache.flink.api.common.functions.FilterFunction;
 import org.apache.flink.api.common.functions.MapFunction;
-import org.apache.flink.api.common.functions.ReduceFunction;
-import org.apache.flink.api.java.tuple.Tuple2;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.windowing.helper.Count;
-import org.apache.flink.streaming.api.windowing.helper.Time;
 
-import java.io.*;
-import java.util.concurrent.TimeUnit;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Serializable;
 
 public class AttackRecognition {
 
   public static void main(String[] args) throws Exception {
+
     new LogFileSimulator().start();
 
     StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironment();
 
-    DataStream<LogFileEntry> logStream = env
-        .readTextStream(Config.outputPathToLogFile())
-        .map(new MapFunction<String, LogFileEntry>() {
-      private LogFileEntry e = new LogFileEntry();
-      @Override
-      public LogFileEntry map(String value) throws Exception {
-        String[] splitted = value.split(":");
-        e.timestamp = Long.valueOf(splitted[0]);
-        e.ip = splitted[1];
-        return e;
-      }
-    });
+    DataStream<LogFileEntry> logStream =
+        env.readTextStream(Config.outputPathToLogFile())
+           .map(new MapFunction<String, LogFileEntry>() {
+               private LogFileEntry e = new LogFileEntry();
+
+               @Override
+               public LogFileEntry map(String value) throws Exception {
+                 String[] splitted = value.split(":");
+                 e.timestamp = Long.valueOf(splitted[0]);
+                 e.ip = splitted[1];
+                 return e;
+               }
+          });
 
     // IMPLEMENT THIS STEP
 
@@ -73,11 +74,11 @@ public class AttackRecognition {
         if (i == ATTACK_EVERY) {
           i = 0;
           for (int j = 0; j < NUMBER_ATTACK_MESSAGES; j++) {
-            writeLogEntry("86.102.2." + ((int) (Math.random()*128 + 1)));
+            writeLogEntry("86.47.1.12");
           }
         }
         else {
-          writeLogEntry("86.47.1.12");
+          writeLogEntry("86.102.2." + ((int) (Math.random() * 128 + 1)));
         }
         i++;
       }
@@ -91,7 +92,7 @@ public class AttackRecognition {
       } catch (IOException e) {
         System.err.println(e);
       } finally {
-        if(out != null){
+        if (out != null){
           out.close();
         }
       }
